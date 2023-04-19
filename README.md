@@ -1,4 +1,1 @@
-
-#� �I�o�t�-�m�o�n�i�t�o�r�i�n�g�-�a�n�d�-�m�a�n�a�g�e�m�e�n�t�
-�
-�
+# Iot Monitoring and Mangement Software
