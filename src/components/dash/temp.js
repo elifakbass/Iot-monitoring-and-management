@@ -1,0 +1,39 @@
+import React from "react";
+import Thermometer from "react-thermometer-component";
+
+const styles = {
+  dial: {
+    display: "inline-block",
+    width: `300px`,
+    height: `auto`,
+    color: "#000",
+    border: "0.5px solid #fff",
+    padding: "2px",
+    marginLeft:"180px"
+  },
+  title: {
+    fontSize: "1em",
+    color: "#000",
+    marginTop: "15px",
+    marginRight:"80px"
+  }
+};
+
+const Temp = ({ id, value, title }) => {
+  return (
+    <div style={styles.dial}>
+      <Thermometer
+        theme="light"
+        value={value}
+        max="100"
+        steps="1"
+        format="°C"
+        size="normal"
+        height="180"
+      />
+      
+    </div>
+  );
+};
+
+export default Temp;
