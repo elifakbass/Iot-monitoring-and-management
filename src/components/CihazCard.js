@@ -5,7 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useData } from '../context';
+import { useData } from '../Context/context';
 import ProgressBar from '../components/ProgressBar';
 
 const bull = (
@@ -19,7 +19,7 @@ const bull = (
 
 
 export default function BasicCard() {
-    const {devices}=useData();
+    const {cihazlar}=useData();
     
   return (
     <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block' ,maxHeight:230}} color='d9d9d9'>
@@ -28,7 +28,7 @@ export default function BasicCard() {
           Bağlantılar
         </Typography>
         <Typography variant="h3" component="div" sx={{marginTop:2,marginBottom:2, fontWeight:'bold'}} color="text.secondary">
-          {devices.length }
+          {cihazlar.length }
         </Typography>
         <ProgressBar/>
         <Typography sx={{ fontSize: 14  }} color="text.secondary" gutterBottom>

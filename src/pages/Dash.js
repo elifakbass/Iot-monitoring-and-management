@@ -5,7 +5,7 @@ import Temp from '../components/dash/temp.js';
 import Barometer from '../components/dash/barometer.js';
 import Grafik from '../components/dash/cizgiGrafik.js';
 import Table from '../components/dash/table.js';
-import  { useData } from '../context';
+import  { useData } from '../Context/context';
 
 function Dash() {
   

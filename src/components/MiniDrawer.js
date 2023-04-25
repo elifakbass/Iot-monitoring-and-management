@@ -25,8 +25,9 @@ import LeakAddIcon from '@mui/icons-material/LeakAdd';
 import HomeIcon from '@mui/icons-material/Home';
 import DevicesIcon from '@mui/icons-material/Devices';
 import { useLocation } from 'react-router-dom';
-import { useData } from '../context';
+import { useData } from '../Context/context';
 import { useState } from 'react';
+import { useAuth } from '../Context/AuthContext';
 
 
 const drawerWidth = 240;
@@ -123,7 +124,15 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const {setUser}=useAuth();
+  const handleLogout= ()=>{
+    
+    setUser(false);
+  }
+
   const {name}=useData();
+  const {user}=useAuth();
+  
 
   const location=useLocation();
   console.log(location);
@@ -143,8 +152,8 @@ export default function MiniDrawer() {
         break;       
     }
   }
-
   return (
+    
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}
@@ -207,7 +216,7 @@ export default function MiniDrawer() {
 
               }}
             >
-            Kullanıcı Adı
+            {user.username}
             </Typography> 
             <Typography
               component="span"
@@ -242,7 +251,7 @@ export default function MiniDrawer() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={setting==="Logout" ? handleLogout : handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

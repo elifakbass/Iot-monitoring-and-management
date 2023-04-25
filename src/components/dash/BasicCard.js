@@ -2,14 +2,16 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useData } from '../../context';
+import { useData } from '../../Context/context';
+import { useParams } from 'react-router-dom';
 
 
 
 export default function BasicCard() {
 
-    const {name,tip }= useData();
-  
+    const {name,tip,setName,setTip,cihazlar }= useData();
+    
+
 
   return (
     <Card sx={{ minWidth: 230 ,textAlign:'left', display:'absolute',boxShadow:'none'}} >

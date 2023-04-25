@@ -5,7 +5,7 @@ import CircularProgress, {
   circularProgressClasses,
 } from '@mui/material/CircularProgress';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { useData } from '../context';
+import { useData } from '../Context/context';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -19,10 +19,10 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
 }));
 export default function CustomizedProgressBars() {
-    const {devices}=useData();
+    const {cihazlar}=useData();
     return (
       <Box sx={{ flexGrow: 1 , marginBottom:1,marginTop:1}}>
-        <BorderLinearProgress variant="determinate" value={devices.length} />
+        <BorderLinearProgress variant="determinate" value={cihazlar.length} />
       </Box>
     );
   }

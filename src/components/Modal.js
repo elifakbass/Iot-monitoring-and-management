@@ -3,7 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useData } from '../context';
+import { useData } from '../Context/context';
+import { updateAlarm,fetchDevice } from '../api';
+import { useAuth } from '../Context/AuthContext';
 
 const style = {
   position: 'absolute',
@@ -17,19 +19,31 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
+export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const [bigValue, setBigValue] = React.useState('');
   const [smallValue, setSmallValue] = React.useState('');
+  const {setCihazlar,cihazlar}=useData();
+  const {user}=useAuth();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  React.useEffect(()=>{
+
+  },[smallValue,bigValue]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(bigValue); // or do something with the input value
+    let data={'alarm_ust_sinir':bigValue,'alarm_alt_sinir':smallValue};
+    updateAlarm(props.id,data).then((data)=>{
+      fetchDevice(user.id).then(devices=>{
+        setCihazlar(devices);
+      });
+    });
     setOpen(false);
   };
+  
   
   const handleBigInputChange = (event) => {
     setBigValue(event.target.value);
@@ -40,7 +54,7 @@ export default function BasicModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Düzenle</Button>
+      <Button onClick={handleOpen} sx={{fontSize:13,fontWeight:600,color:"#0077b3"}}>Düzenle</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -56,7 +70,7 @@ export default function BasicModal() {
             <input 
               type="text" 
               placeholder="Deger Giriniz" 
-              defaultValue={bigValue} 
+
               style={{borderRadius:5 , outline:'none' ,border:'1px solid #ccc'}}
               onChange={handleBigInputChange} 
             />
@@ -66,7 +80,7 @@ export default function BasicModal() {
             <input 
               type="text" 
               placeholder="Deger Giriniz" 
-              defaultValue={smallValue} 
+
               style={{borderRadius:5 , outline:'none',border:'1px solid #ccc'}}
               onChange={handleSmallInputChange} 
             />

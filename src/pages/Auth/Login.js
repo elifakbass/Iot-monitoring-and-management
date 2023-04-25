@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useFormik } from 'formik';
+import { replace, useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -8,8 +8,23 @@ import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Link } from '@mui/material';
+import { fetchLogin } from '../../api';
+import {useNavigate,Navigate} from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
+
 
 export default function Login(){
+  const {setUser,user}=useAuth();
+  const navigate=useNavigate();
+  useEffect(()=>{
+    if(user){
+      navigate("/" ,{
+        replace:true,
+      });
+    }
+
+
+  },[])
 const validationSchema = yup.object({
   email: yup
     .string('Email giriniz')
@@ -17,7 +32,7 @@ const validationSchema = yup.object({
     .required('Email gerekli'),
   password: yup
     .string('Şifrenizi giriniz')
-    .min(8, 'Şifre en az 8 karakter içermeli')
+    .min(6, 'Şifre en az 6 karakter içermeli')
     .required('Şifre gerekli'),
 });
 const formik = useFormik({
@@ -26,16 +41,24 @@ const formik = useFormik({
     password: '',
   },
   validationSchema: validationSchema,
-  onSubmit: (values) => {
-    alert(JSON.stringify(values, null, 2));
-  },
+  onSubmit: (values) =>  {
+    fetchLogin(values.email,values.password);
+    setUser(localStorage.getItem("user-info"));
+    navigate("/",{
+      replace:true
+    });
+
+  }
+
 });
+
+
 return (
   <div>
     <div>
       
     <form onSubmit={formik.handleSubmit}
-     style={{position:'relative',left:'400px',top:'120px',width:'600px',padding:'40px',border:"1px solid #ccc",background:"#708090",borderRadius:15}}>
+     style={{position:'relative',left:'400px',top:'120px',width:'600px',padding:'40px',border:"1px solid #ccc",background:"#338099",borderRadius:15}}>
       <div className='login'>IOTMON</div>
       <TextField
         fullWidth
@@ -61,7 +84,7 @@ return (
         helperText={formik.touched.password && formik.errors.password}
         style={{marginBottom:'30px'}}
       />
-      <Button variant="contained" width="50px" type="submit" style={{position:"relative",marginLeft:"250px",marginBottom:'30px',background:"#8c8c8c"}}>
+      <Button variant="contained" width="50px" type="submit" style={{position:"relative",marginLeft:"250px",marginBottom:'30px',background:"#0088cc"}}>
         Giriş Yap
       </Button>
       <div style={{color:'#ccc',marginLeft:'75px'}}>-------------------------------   VEYA   -------------------------------</div>

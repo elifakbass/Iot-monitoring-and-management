@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { useData } from '../../context';
+import { useData } from '../../Context/context';
 
 const columns = [
   {
@@ -100,7 +100,7 @@ export default function StickyHeadTable() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.zaman}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (

@@ -1,7 +1,7 @@
 import  {React} from 'react';
 import {VictoryLine,VictoryChart,VictoryTheme, VictoryScatter,VictoryVoronoiContainer,VictoryTooltip} from 'victory';
 
-import { useData } from '../../context';
+import { useData } from '../../Context/context';
 function CizgiGrafik() {
 
   const {veri} =useData();

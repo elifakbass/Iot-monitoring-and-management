@@ -7,26 +7,53 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect,useState } from 'react';
-import { useData } from '../context';
+import { useData } from '../Context/context';
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, Navigate ,useNavigate} from 'react-router-dom';
+import { fetchDashs } from '../api';
 
 
-function createData(cihazIsmi, göstergeIsmi) {
-  return { cihazIsmi, göstergeIsmi};
+
+function createData(cihazId,cihazIsmi, göstergeIsmi) {
+  return { cihazId,cihazIsmi, göstergeIsmi};
 }
 
 
 export default function TableGösterge(props) {
-    const {name} =useData();
+    const {name,gostergeler,cihazlar,setKural} =useData();
     const [filteredRows, setFilteredRows] = useState([]);
-    const rows = [
-        createData(name, "Temperature_SN-001"),
+    const [rows,setRows]=useState([]);
 
-      ];
+    const [hoveredRow, setHoveredRow] = useState(null);
+
+
+    const handleRowHover = (rowId) => {
+    setHoveredRow(rowId);
+    };
+
+   
+    
+      useEffect(()=>{
+
+        for(let i=0; i<gostergeler.length;i++){
+          gostergeler[i].map((gosterge)=>{
+            cihazlar.map((cihaz)=>{
+              if(cihaz.id===gosterge.cihaz_id){
+                const row=createData(cihaz.id,cihaz.isim,gosterge.isim);
+                setRows((current)=>[...current,row]);
+
+              }
+             
+            })
+          
+          });
+        }
+        
+      },[gostergeler]);
 
       
      useEffect(() => {
+
       if(props.parametre===undefined || props.parametre===""){
         setFilteredRows(rows);
       }
@@ -37,7 +64,7 @@ export default function TableGösterge(props) {
         setFilteredRows(filtered);
       }
       
-    }, [props.parametre]);
+    }, [props.parametre,rows]);
   return (
     <TableContainer component={Paper} sx={{ minWidth: 1000 ,marginLeft:"200px",marginTop:"20px"}} elevation={0} >
       <Table sx={{ maxWidth: 1000 }} aria-label="simple table">
@@ -50,17 +77,22 @@ export default function TableGösterge(props) {
         <TableBody>
           {filteredRows.map((row) => (
             
+            
             <TableRow
-              key={row.name}
+              key={row.cihazId}
+              onMouseEnter={() => handleRowHover(row.cihazId)}
+            onMouseLeave={() => handleRowHover(null)}
               sx={{
                 '&:last-child td, &:last-child th': { border: 0 },
                 borderBottom: '1px solid #ccc',
                 marginTop: 5,
                 cursor: 'pointer', // add cursor style to indicate clickable
-                textDecoration:'none'
+                textDecoration:'none',
+                backgroundColor: hoveredRow === row.cihazId ? '#ecf2f9' : 'white',
               }}
+              
               component={Link} // wrap TableRow in Link component
-              to={`${name}`} // set the target link URL
+              to={`${row.cihazIsmi}`} // set the target link URL
               
             >
               <TableCell component="th" scope="row">

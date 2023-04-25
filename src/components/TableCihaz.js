@@ -6,28 +6,39 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useData } from '../context';
+import { useData } from '../Context/context';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Button, Link } from '@mui/material';
 import { useEffect,useState } from 'react';
 import Modal from './Modal';
+import { fetchDashs, fetchDevice } from '../api';
+import { useAuth } from '../Context/AuthContext';
 
-function createData(isim, tip) {
-  return { isim, tip};
+function createData(id,isim, tip,alarm_alt_sinir,alarm_ust_sinir) {
+  return { id,isim, tip,alarm_alt_sinir,alarm_ust_sinir};
 }
 
 
 
-
 export default function TableCihaz(props) {
-    const {name} =useData();
+    const {name,cihazlar} =useData();
+    const {user}=useAuth();
     const [filteredRows, setFilteredRows] = useState([]);
-    const rows = [
-        createData(name, "default"),
-        createData("SN-002", "default"),
-      ];
+    const [rows,setRows]=useState([]);
+    
+    useEffect(()=>{
+      if(rows.length===cihazlar.length){
+        setRows([]);
+      }
+      cihazlar.map((cihaz)=>{
+        const row=createData(cihaz.id,cihaz.isim,cihaz.tip,cihaz.alarm_alt_sinir,cihaz.alarm_ust_sinir);
+        setRows((current)=>[...current,row]);
 
-      
+      });
+     
+
+    },[cihazlar])
+    
      useEffect(() => {
       if(props.parametre===undefined || props.parametre===""){
         setFilteredRows(rows);
@@ -39,7 +50,7 @@ export default function TableCihaz(props) {
         setFilteredRows(filtered);
       }
       
-    }, [props.parametre]);
+    }, [props.parametre,rows]);
      
  
   return (
@@ -49,22 +60,22 @@ export default function TableCihaz(props) {
           <TableRow>
             <TableCell>Cihaz İsmi</TableCell>
             <TableCell align="left">Cihaz Tipi</TableCell>
-            <TableCell/>
+            <TableCell>Alarm Kuralları</TableCell>
             <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
           { filteredRows.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.isim}
               sx={{ '&:last-child td, &:last-child th': { border: 0} , marginTop:"5px",borderBottom: '1px solid #ccc'}}
             >
               <TableCell component="th" scope="row"  >
                 {row.isim}
               </TableCell>
               <TableCell align="left"  >{row.tip}</TableCell>
-              <TableCell align='right' >{<Modal/>}</TableCell>
-              <TableCell align="right" sx={{width:'30px'}} elevation={0} >{<Link href={`gostergeler/${name}` } color="#595959"><DashboardIcon/></Link>}</TableCell> 
+              <TableCell align='left' >{`${row.alarm_ust_sinir} > veya ${row.alarm_alt_sinir} <`} <Modal id={row.id} /></TableCell>
+              <TableCell align="right" sx={{width:'30px'}} elevation={0} >{<Link href={`gostergeler/${row.isim}` } color="#595959"><DashboardIcon/></Link>}</TableCell> 
             
             </TableRow>
           
