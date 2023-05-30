@@ -98,7 +98,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const pages = ['Gösterge Panelleri'];
-const settings = ['Profile','Logout'];
+const settings = ['Logout'];
 
 
 

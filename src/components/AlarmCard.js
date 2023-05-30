@@ -18,7 +18,7 @@ const bull = (
 
 
 export default function BasicCard() {
-    const {alarm}=useData();
+    const {alarmCount}=useData();
     
   return (
     <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block', minHeight:230}} color='d9d9d9'>
@@ -27,15 +27,12 @@ export default function BasicCard() {
           Alarm Sayısı
         </Typography>
         <Typography variant="h3" component="div" sx={{marginTop:3,marginBottom:2, fontWeight:'bold'}} color="text.secondary">
-          {alarm.length }
+          {alarmCount }
         </Typography>
-        <Typography sx={{ fontSize: 14  }} color="text.secondary" gutterBottom>
-          Etkin Alarm Sayısı
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Günlük Toplam Etkin Alarm Sayısı
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button sx={{color:'#0099cc'}} size="small">Daha Fazla Gör</Button>
-      </CardActions>
     </Card>
   );
 }

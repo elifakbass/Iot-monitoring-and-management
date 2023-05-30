@@ -16,6 +16,7 @@ import { useAuth } from '../../Context/AuthContext';
 export default function Login(){
   const {setUser,user}=useAuth();
   const navigate=useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   useEffect(()=>{
     if(user){
       navigate("/" ,{
@@ -35,18 +36,26 @@ const validationSchema = yup.object({
     .min(6, 'Şifre en az 6 karakter içermeli')
     .required('Şifre gerekli'),
 });
+
 const formik = useFormik({
   initialValues: {
     email: '',
     password: '',
   },
   validationSchema: validationSchema,
-  onSubmit: (values) =>  {
-    fetchLogin(values.email,values.password);
-    setUser(localStorage.getItem("user-info"));
-    navigate("/",{
-      replace:true
-    });
+  onSubmit: async (values) =>  {
+    await fetchLogin(values.email,values.password);
+    setUser(JSON.parse(localStorage.getItem("user-info")));
+    
+    if(localStorage.getItem("user-info")!=="\"error\""){
+      console.log(".")
+      navigate("/",{
+        replace:true
+      });
+
+    }
+
+    
 
   }
 
@@ -58,19 +67,18 @@ return (
     <div>
       
     <form onSubmit={formik.handleSubmit}
-     style={{position:'relative',left:'400px',top:'120px',width:'600px',padding:'40px',border:"1px solid #ccc",background:"#338099",borderRadius:15}}>
+     style={{position:'relative',left:'400px',top:'120px',width:'600px',height:'500px',padding:'40px',border:"1px solid #ccc",background:"#338099",borderRadius:15}}>
       <div className='login'>IOTMON</div>
       <TextField
         fullWidth
         id="email"
         name="email"
-        label="Kullanıcı Adı"
+        label="E-mail"
         value={formik.values.email}
         onChange={formik.handleChange}
         error={formik.touched.email && Boolean(formik.errors.email)}
         helperText={formik.touched.email && formik.errors.email}
-        style={{marginTop:'20px',marginBottom:'15px'}}
-        
+        style={{marginTop:'20px',marginBottom:'25px'}}
       />
       <TextField
         fullWidth
@@ -82,18 +90,13 @@ return (
         onChange={formik.handleChange}
         error={formik.touched.password && Boolean(formik.errors.password)}
         helperText={formik.touched.password && formik.errors.password}
-        style={{marginBottom:'30px'}}
+        style={{marginBottom:'35px'}}
       />
       <Button variant="contained" width="50px" type="submit" style={{position:"relative",marginLeft:"250px",marginBottom:'30px',background:"#0088cc"}}>
         Giriş Yap
       </Button>
-      <div style={{color:'#ccc',marginLeft:'75px'}}>-------------------------------   VEYA   -------------------------------</div>
-      <div>
-        <GoogleIcon  fontSize='large' style={{marginTop:'50px',marginRight:'10px',marginLeft:'20px',color:'#ccc'}}/>
-        <LinkedInIcon fontSize='large' style={{marginTop:'50px',marginRight:'10px',color:'#ccc'}}/>
-        <GitHubIcon fontSize='large' style={{marginTop:'50px',marginRight:'10px',color:'#ccc'}}/>
-      
-      </div>
+
+     
 
     </form>
     </div>

@@ -6,13 +6,15 @@ import Modal from '@mui/material/Modal';
 import { useData } from '../Context/context';
 import { updateAlarm,fetchDevice } from '../api';
 import { useAuth } from '../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 350,
   bgcolor: 'background.paper',
   border: '1px solid #ccc',
   boxShadow: 12,
@@ -20,14 +22,17 @@ const style = {
 };
 
 export default function BasicModal(props) {
+
   const [open, setOpen] = React.useState(false);
   const [bigValue, setBigValue] = React.useState('');
   const [smallValue, setSmallValue] = React.useState('');
-  const {setCihazlar,cihazlar}=useData();
+  const {setCihazlar,cihazlar,name}=useData();
   const {user}=useAuth();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const navigate=useNavigate();
 
   React.useEffect(()=>{
 
@@ -36,11 +41,21 @@ export default function BasicModal(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     let data={'alarm_ust_sinir':bigValue,'alarm_alt_sinir':smallValue};
-    updateAlarm(props.id,data).then((data)=>{
-      fetchDevice(user.id).then(devices=>{
-        setCihazlar(devices);
+    let big=parseInt(bigValue);
+    let small=parseInt(smallValue);
+   
+    if(Number.isInteger(big) && Number.isInteger(small)){
+      updateAlarm(props.id,data).then((data)=>{
+        fetchDevice(user.id).then(devices=>{
+          setCihazlar(devices);
+        });
       });
-    });
+    }
+    else{
+      alert('Lütfen sadece geçerli bir sayı girin!');
+    }
+
+    
     setOpen(false);
   };
   
@@ -62,7 +77,10 @@ export default function BasicModal(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{marginBottom:3}}>
+        <Typography id="modal-modal-title"  component="h1" sx={{marginBottom:1,color:"#333333",fontSize:23}}>
+            {props.isim}
+          </Typography>
+          <Typography id="modal-modal-description"  component="h6" sx={{marginBottom:3,color:"#333333"}}>
             Alarm Yapılandır
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -71,22 +89,24 @@ export default function BasicModal(props) {
               type="text" 
               placeholder="Deger Giriniz" 
 
-              style={{borderRadius:5 , outline:'none' ,border:'1px solid #ccc'}}
+              style={{borderRadius:5 , outline:'none' ,border:'1px solid #ccc' ,marginBottom:10,height:30,
+              padding: '0 10px'}}
               onChange={handleBigInputChange} 
             />
-            <span style={{marginLeft:6}} >{'>'}</span>
+            <span style={{marginLeft:10,fontSize:20}} >{'>'}</span>
             </div>
             <div style={{marginBottom:'10px'}}>
             <input 
               type="text" 
               placeholder="Deger Giriniz" 
 
-              style={{borderRadius:5 , outline:'none',border:'1px solid #ccc'}}
+              style={{borderRadius:5 , outline:'none',border:'1px solid #ccc',marginBottom:10,height:30,
+              padding: '0 10px'}}
               onChange={handleSmallInputChange} 
             />
-            <span style={{marginLeft:6}} >{'<'}</span>
+            <span style={{marginLeft:10,fontSize:20}} >{'<'}</span>
             </div>
-            <Button style={{color:"#595959"}} type="submit">Alarm Oluştur</Button>
+            <Button style={{color:"#fff",background:"#0077b3",borderRadius:10}} type="submit">Alarm Oluştur</Button>
           </form>
         </Box>
       </Modal>

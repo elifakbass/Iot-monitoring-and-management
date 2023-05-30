@@ -1,5 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { useData } from "../../Context/context";
 
 const styles = {
   dial: {
@@ -8,7 +9,7 @@ const styles = {
     color: "#000",
     border: "0.5px solid #fff",
     padding: "2px",
-    marginRight:"300px"
+    marginLeft:"30px"
   },
   title: {
     fontSize: "1em",
@@ -17,6 +18,7 @@ const styles = {
 };
 
 const Barometer = ({ id, value, title }) => {
+  const {low,big}=useData();
   return (
     <div style={styles.dial}>
       <Chart
@@ -28,10 +30,10 @@ const Barometer = ({ id, value, title }) => {
           [title, Number(value)]
         ]}
         options={{
-          redFrom: 90,
+          redFrom: big,
           redTo: 200,
-          yellowFrom: 50,
-          yellowTo: 90,
+          yellowFrom:-200,
+          yellowTo:-low,
           minorTicks: 5,
           min: -200,
           max: 200

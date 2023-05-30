@@ -54,5 +54,24 @@ export const fetchDashs=async(cihazId)=>{
   return response.data;
 
 }
-
+export const fetchAlarmCount=async(musteriId)=>{
+  const response= await axios.get(`http://localhost:9000/api/alarm_count/${musteriId}`);
+  return response.data;
+}
+export const fetchVeriler=async(cihazId)=>{
+  const response =await axios.get(`http://localhost:9000/api/data/${cihazId}`);
+  return response.data;
+}
  
+export const postVeri = async (cihaz_id, deger, alarm) => {
+  try {
+    const response = await axios.post('http://localhost:9000/api/data', {
+      cihaz_id:cihaz_id,
+      deger:deger,
+      alarm:alarm
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}

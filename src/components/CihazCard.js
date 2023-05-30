@@ -22,7 +22,7 @@ export default function BasicCard() {
     const {cihazlar}=useData();
     
   return (
-    <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block' ,maxHeight:230}} color='d9d9d9'>
+    <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block' ,minHeight:230}} color='d9d9d9'>
       <CardContent sx={{backgroundColor:'d9d9d9'}}>
       <Typography variant="body2" sx={{textAlign:'left',marginLeft:1, fontSize:17, letterSpacing:1,fontWeight:500}} color="text.secondary">
           Bağlantılar
@@ -35,9 +35,7 @@ export default function BasicCard() {
           Aktif Cihaz Sayısı
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button sx={{color:'#0099cc'}} size="small">Daha Fazla Gör</Button>
-      </CardActions>
+      
     </Card>
   );
 }

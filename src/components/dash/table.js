@@ -79,7 +79,7 @@ export default function StickyHeadTable() {
   };
 
   return (
-    <Paper sx={{ width: '50%', overflow: 'hidden'}} elevation={1}>
+    <Paper sx={{  width: '600px', overflow: 'hidden',marginLeft:'50px' }} elevation={1}>
       <TableContainer sx={{ maxHeight: 250 }}>
         <Table stickyHeader aria-label="sticky table" sx={{ border: 'none' }}>
           <TableHead>

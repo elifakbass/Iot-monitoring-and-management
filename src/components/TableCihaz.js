@@ -74,7 +74,7 @@ export default function TableCihaz(props) {
                 {row.isim}
               </TableCell>
               <TableCell align="left"  >{row.tip}</TableCell>
-              <TableCell align='left' >{`${row.alarm_ust_sinir} > veya ${row.alarm_alt_sinir} <`} <Modal id={row.id} /></TableCell>
+              <TableCell align='left' >{`${row.alarm_ust_sinir} > veya ${row.alarm_alt_sinir} <`} <Modal id={row.id} isim={row.isim} /></TableCell>
               <TableCell align="right" sx={{width:'30px'}} elevation={0} >{<Link href={`gostergeler/${row.isim}` } color="#595959"><DashboardIcon/></Link>}</TableCell> 
             
             </TableRow>
