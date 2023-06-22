@@ -28,6 +28,10 @@ import { useLocation } from 'react-router-dom';
 import { useData } from '../Context/context';
 import { useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
+import GroupIcon from '@mui/icons-material/Group';
+import BugReportIcon from '@mui/icons-material/BugReport';
+import { useTenant } from '../Context/TenantContext';
+import BrowseGalleryIcon from '@mui/icons-material/BrowseGallery';
 
 
 const drawerWidth = 240;
@@ -97,12 +101,25 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const pages = ['Gösterge Panelleri'];
+const musteri_pages = ['Ana Sayfa','Cihazlar','Gösterge Panelleri'];
 const settings = ['Logout'];
+const pages= ['Gösterge Panelleri'];
+const musteri_icons=[<HomeIcon />,<DevicesIcon/>,<DashboardIcon/>];
+const tenant_icons=[<HomeIcon/>,<GroupIcon/>,<DevicesIcon/>,<DashboardIcon/>];
+const tenant_pages=['Ana Sayfa','Müşteriler','Cihazlar','Gösterge Panelleri'];
+const musteri_paths=['/','/cihazlar','/gostergeler'];
+const tenant_paths=['/tenant','/tenant/musteriler','/tenant/cihazlar','/tenant/gostergeler'];
 
+const admin_paths=['/admin','/admin/GostergeKutuphanesi'];
+const admin_pages=['Ana Sayfa','Gösterge Kütüphanesi'];
+const admin_icons=[<HomeIcon/>,<BrowseGalleryIcon/>];
 
+let sayfalar=[];
+let icons=[];
+let paths=[];
 
 export default function MiniDrawer() {
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -124,33 +141,66 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const {setUser}=useAuth();
+  const {setUser,setType}=useAuth();
   const handleLogout= ()=>{
     
     setUser(false);
+    setType(false);
   }
 
-  const {name}=useData();
-  const {user}=useAuth();
+ // const {name,kullanici}=useData();
+// const {name}=useTenant();
+  const {user,type}=useAuth();
   
 
   const location=useLocation();
   console.log(location);
 
   const switchPage=(key)=> {
-    switch(key){
-      case '/gostergeler':
+    let url=key.split("/");
+    let sayfa=url[url.length-1];
+    if(key==='/'){
+      sayfa='/';
+    }
 
+    switch(sayfa){
+      case 'tenant':
+        return 'ANA SAYFA';
+      case 'musteriler':
+        return "Kullanıcılar";
+      case 'gostergeler':
         return 'GÖSTERGE PANELLERİ';
-      case '/cihazlar':
+      case 'cihazlar':
         return 'CİHAZLAR';
       case '/':
         return 'ANA SAYFA';
-      case `/gostergeler/${name}`:
-        return `GÖSTERGE PANALLERİ > ${name}` ;
+      case 'admin':
+        return 'ANA SAYFA';
+      case 'GostergeKutuphanesi':
+        return "Gösterge Kütüphanesi";
+
+   //   case `/gostergeler/${name}`:
+   //     return `GÖSTERGE PANALLERİ > ${name}` ;
       default:
         break;       
-    }
+    
+  }
+  }
+  
+  if(type==='tenant'){
+    sayfalar=tenant_pages;
+    icons=tenant_icons;
+    paths=tenant_paths;
+  }
+  else if(type==='admin'){
+    sayfalar=admin_pages;
+    icons=admin_icons;
+    paths=admin_paths;
+  }
+  else{
+    sayfalar=musteri_pages;
+    icons=musteri_icons;
+    paths=musteri_paths;
   }
   return (
     
@@ -189,7 +239,6 @@ export default function MiniDrawer() {
           >
             IOTMON
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex',borderLeft:'1px solid #596673',paddingLeft:'7px' } }}>
             {pages.map((page) => (
               <Button
@@ -197,10 +246,11 @@ export default function MiniDrawer() {
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 href={location.pathname}
               >
-                {switchPage(location.pathname)}
+                { switchPage(location.pathname)}
               </Button>
             ))}
           </Box>
+          
           <Typography
           component="div"
           sx={{
@@ -216,7 +266,7 @@ export default function MiniDrawer() {
 
               }}
             >
-            {user.username}
+            {user.username || user.email}
             </Typography> 
             <Typography
               component="span"
@@ -225,7 +275,7 @@ export default function MiniDrawer() {
               display: {xs:'none',md:'flex'}
               }}
             >
-             Müşteri
+             {type.charAt(0).toUpperCase() + type.slice(1)}
             </Typography> 
           </Typography>
           <Box sx={{ flexGrow: 0 }}>
@@ -267,15 +317,18 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List >
-            <ListItem disablePadding sx={{ display: 'block' }}>
+        <List>
+           { 
+           
+           sayfalar.map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                 }}
-                href='/'
+                href={paths[index]}
               >
                 <ListItemIcon
                   sx={{
@@ -284,61 +337,16 @@ export default function MiniDrawer() {
                     justifyContent: 'center',
                   }}
                 >
-                  <HomeIcon sx={{fontSize:30}}/>
+                {icons[index] }
                 </ListItemIcon>
-                <ListItemText primary='Ana Sayfa' sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
+          ))}
         </List>
+       
         <Divider />
-        <List>
-            <ListItem  disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                href='/cihazlar'
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <DevicesIcon sx={{fontSize:30}}/>
-                </ListItemIcon>
-                <ListItemText primary= 'Cihazlar' sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-        </List>
-        <Divider/>
-        <List>
-            <ListItem  disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-                href='/gostergeler'
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <DashboardIcon sx={{fontSize:30}}/>
-                </ListItemIcon >
-                <ListItemText primary= 'Gösterge Paneli' sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-        </List>
-
+        
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3}}>
         <DrawerHeader />

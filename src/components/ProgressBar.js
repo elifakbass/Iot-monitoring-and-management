@@ -22,7 +22,7 @@ export default function CustomizedProgressBars() {
     const {cihazlar}=useData();
     return (
       <Box sx={{ flexGrow: 1 , marginBottom:1,marginTop:1}}>
-        <BorderLinearProgress variant="determinate" value={cihazlar.length} />
+        <BorderLinearProgress variant="determinate" value={cihazlar.length*10} />
       </Box>
     );
   }

@@ -12,14 +12,31 @@ import Map from '../components/Map.js';
 
 function Dash() {
 
-  const{data,veri}= useData();
+  const{data,selectedChart}= useData();
+
+  
+  const renderChart=()=>{
+    switch (selectedChart) {
+      case 1:
+        return <Dial value={data} title="Sıcaklık" />;
+      case 2:
+        return <Temp value={data}/>;
+      case 3:
+        return <Barometer id="dial9" value={data} title="Sıcaklık" />;
+      default:
+        return null;
+    };
+  }; 
 
 
+
+console.log(selectedChart);
 return (
-  <div className='dash'>
+  <div className='home'>
+  <div className='dashboard'>
     <div className="dials">
       <Card className='info' />
-      <Barometer id="dial9" value={data} title="Sıcaklık" />
+      {renderChart()}
       <Map className='leaflet-container'/>
     </div>
     <div className='grafik' >
@@ -30,6 +47,7 @@ return (
       <Table/>
 
     </div> 
+  </div>
   </div>
 
   )

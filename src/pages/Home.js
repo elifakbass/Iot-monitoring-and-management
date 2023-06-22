@@ -4,9 +4,11 @@ import CihazCard from '../components/CihazCard';
 function Home() {
 
   return (
-    <div className='homeCard'>
+    <div className='home'>
+      <div className='cardTenant'>
       <AlarmCard/>
       <CihazCard/>
+      </div>
     </div>
   )
 }

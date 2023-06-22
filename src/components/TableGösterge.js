@@ -66,21 +66,21 @@ export default function TableGösterge(props) {
       
     }, [props.parametre,rows]);
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 1000 ,marginLeft:"200px",marginTop:"20px"}} elevation={0} >
-      <Table sx={{ maxWidth: 1000 }} aria-label="simple table">
-        <TableHead>
+    <TableContainer component={Paper} sx={{ maxWidth: 1200 ,marginLeft:"100px",marginTop:"60px",backgroundColor:'#f2f2f2'}} elevation={1} >
+      <Table sx={{ minWidth: 650 }} aria-label="a dense table">
+        <TableHead >
           <TableRow>
             <TableCell>Cihaz İsmi</TableCell>
             <TableCell align="left">Gösterge</TableCell>  
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredRows.map((row) => (
+          {filteredRows.map((row,index) => (
             
             
             <TableRow
               key={row.cihazId}
-              onMouseEnter={() => handleRowHover(row.cihazId)}
+              onMouseEnter={() => handleRowHover(index)}
             onMouseLeave={() => handleRowHover(null)}
               sx={{
                 '&:last-child td, &:last-child th': { border: 0 },
@@ -88,7 +88,7 @@ export default function TableGösterge(props) {
                 marginTop: 5,
                 cursor: 'pointer', // add cursor style to indicate clickable
                 textDecoration:'none',
-                backgroundColor: hoveredRow === row.cihazId ? '#ecf2f9' : 'white',
+                backgroundColor: hoveredRow === index ? '#b3d1ff' : '#f2f2f2',
               }}
               
               component={Link} // wrap TableRow in Link component

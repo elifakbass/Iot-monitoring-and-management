@@ -6,6 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useData } from '../Context/context';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const bull = (
   <Box
@@ -21,18 +23,29 @@ export default function BasicCard() {
     const {alarmCount}=useData();
     
   return (
-    <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block', minHeight:230}} color='d9d9d9'>
-      <CardContent sx={{backgroundColor:'d9d9d9'}}>
-      <Typography variant="body2" sx={{textAlign:'left',marginLeft:1, fontSize:17, letterSpacing:1,fontWeight:500}} color="text.secondary">
+    <Box sx={{ minWidth: 400,marginRight:19,marginLeft:20,marginTop:7}} >
+    <Card variant="outlined" sx={{backgroundColor:'#f2f2f2',borderRadius:7, boxShadow:'0 2px 4px rgba(0, 0, 0, 0.2)',minHeight:250}}>
+        <CardContent sx={{backgroundColor:'d9d9d9'}}>
+        <Box component="div" sx={{display:'flex'}}>
+      <Typography  sx={{ fontSize: 20 , marginTop:1 ,marginLeft:1,marginRight:19}} align='left' color="text.secondary" gutterBottom>
           Alarm Sayısı
         </Typography>
-        <Typography variant="h3" component="div" sx={{marginTop:3,marginBottom:2, fontWeight:'bold'}} color="text.secondary">
-          {alarmCount }
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        <CrisisAlertIcon sx={{color:"red",fontSize:50,marginTop:2}} />
+        </Box>
+        <Box component="div" sx={{display:'flex',marginBottom:3}}>
+      <Typography sx={{fontSize:55,fontWeight:600,color:'#595959',marginTop:1,marginLeft:5}}>
+        {alarmCount}
+      </Typography>
+      <ArrowDownwardIcon sx={{color:'green',marginTop:6,marginLeft:2}}/>
+      <Typography sx={{marginTop:6,marginLeft:1,opacity:0.6}}>
+        20% Önceki güne kıyasla
+      </Typography>
+      </Box>
+        <Typography sx={{ fontSize: 14 ,marginLeft:1}} align='left' color="text.secondary" gutterBottom>
           Günlük Toplam Etkin Alarm Sayısı
         </Typography>
       </CardContent>
     </Card>
+    </Box>
   );
 }

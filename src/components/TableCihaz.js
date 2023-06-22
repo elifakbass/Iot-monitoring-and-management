@@ -14,6 +14,8 @@ import Modal from './Modal';
 import { fetchDashs, fetchDevice } from '../api';
 import { useAuth } from '../Context/AuthContext';
 
+
+
 function createData(id,isim, tip,alarm_alt_sinir,alarm_ust_sinir) {
   return { id,isim, tip,alarm_alt_sinir,alarm_ust_sinir};
 }
@@ -21,11 +23,16 @@ function createData(id,isim, tip,alarm_alt_sinir,alarm_ust_sinir) {
 
 
 export default function TableCihaz(props) {
+  const [hoveredRow, setHoveredRow] = useState(null);
     const {name,cihazlar} =useData();
     const {user}=useAuth();
     const [filteredRows, setFilteredRows] = useState([]);
     const [rows,setRows]=useState([]);
     
+    const handleRowHover = (rowId) => {
+      setHoveredRow(rowId);
+      };
+
     useEffect(()=>{
       if(rows.length===cihazlar.length){
         setRows([]);
@@ -54,8 +61,8 @@ export default function TableCihaz(props) {
      
  
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 1000 ,marginLeft:"200px",marginTop:"20px"}} elevation={0} >
-      <Table sx={{ maxWidth: 1000 }} size="small" aria-label="a dense table">
+    <TableContainer component={Paper} sx={{ maxWidth: 1200 ,marginLeft:"100px",marginTop:"60px",backgroundColor:'#f2f2f2'}} elevation={1} >
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Cihaz İsmi</TableCell>
@@ -68,7 +75,15 @@ export default function TableCihaz(props) {
           { filteredRows.map((row) => (
             <TableRow
               key={row.isim}
-              sx={{ '&:last-child td, &:last-child th': { border: 0} , marginTop:"5px",borderBottom: '1px solid #ccc'}}
+              onMouseEnter={() => handleRowHover(row.id)}
+              onMouseLeave={() => handleRowHover(null)}
+             
+              sx={{ '&:last-child td, &:last-child th': { border: 0} , marginTop:"5px",borderBottom: '1px solid #ccc'
+             , backgroundColor: hoveredRow === row.id ? '#b3d1ff' : '#f2f2f2',
+          
+            }}
+           
+          
             >
               <TableCell component="th" scope="row"  >
                 {row.isim}

@@ -28,7 +28,7 @@ function CizgiGrafik() {
   const getMax=getDataSet(big);
   console.log(getMax);
   
-  if(veri[veri.length-1]>120 || veri[veri.length-1]< parseInt(low)){
+  if(veri[veri.length-1]>120 || veri[veri.length-1]< 0){
     h=450;
   }
 

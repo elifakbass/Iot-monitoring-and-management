@@ -5,19 +5,34 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {DataProvider} from './Context/context';
 import {BrowserRouter} from "react-router-dom";
-import { AuthProvider } from './Context/AuthContext';
+import { AuthProvider, useAuth } from './Context/AuthContext';
+import { TenantProvider } from './Context/TenantContext';
+import { AdminProvider } from './Context/AdminContext';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
 
      
-          <BrowserRouter>
-           <AuthProvider>
-        <DataProvider>
-        <App />
-        </DataProvider>
+        <BrowserRouter>
+        <AuthProvider>
+          {localStorage.getItem("user-type")==="\"customer\"" ? (
+            <DataProvider>
+              <App />
+            </DataProvider>
+          ) : localStorage.getItem("user-type")==="\"admin\"" ? (
+            <AdminProvider>
+              <App/>
+            </AdminProvider>
+          )         
+          :(
+            <TenantProvider>
+              <App />
+            </TenantProvider>
+          )}
         </AuthProvider>
-        </BrowserRouter>
+      </BrowserRouter>
        
 
 

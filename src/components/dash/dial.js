@@ -7,7 +7,6 @@ const styles = {
     width: `300px`,
     height: `auto`,
     color: "#000",
-    border: "0.5px solid #fff",
     padding: "2px"
   },
   title: {

@@ -4,17 +4,17 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useData } from '../../Context/context';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../../Context/AuthContext';
+import { useTenant } from '../../Context/TenantContext';
 
 
+export default function BasicCard(props) {
 
-export default function BasicCard() {
-
-    const {name,tip,setName,setTip,cihazlar }= useData();
-    
+  const {name,tip,setName,setTip,cihazlar }= useData();
 
 
   return (
-    <Card sx={{ minWidth: 230 ,textAlign:'left', display:'absolute',boxShadow:'none'}} >
+    <Card sx={{ minWidth: 300,minHeight:200 ,textAlign:'center',backgroundColor:'#f1f1f1', display:'absolute',boxShadow:'none'}} >
       <CardContent>
         <Typography sx={{ fontSize: 25 }} color="text.secondary" gutterBottom>
           Cihaz

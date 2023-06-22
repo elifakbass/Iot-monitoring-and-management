@@ -14,12 +14,11 @@ function Map() {
       });
       const {name,enlem,boylam}=useData();
       const position=[enlem,boylam ];
-      useEffect(()=>{
-        
-      },[name])
+      console.log(position);
+
   return (
     <div>
-      <MapContainer key={ enlem} center={position} zoom={13} scrollWheelZoom={false} style={{width:'450px', height:'250px'}}>
+      <MapContainer key={enlem} center={position} zoom={13} scrollWheelZoom={false} style={{width:'450px', height:'250px'}}>
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

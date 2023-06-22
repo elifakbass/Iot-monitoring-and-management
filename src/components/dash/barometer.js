@@ -1,15 +1,16 @@
 import React from "react";
 import { Chart } from "react-google-charts";
 import { useData } from "../../Context/context";
+import { useAuth } from "../../Context/AuthContext";
 
 const styles = {
   dial: {
-    width: `auto`,
+    display:'inline-block',
+    width: `250px`,
     height: `auto`,
     color: "#000",
-    border: "0.5px solid #fff",
+    border: "0.5px solid #f2f2f2",
     padding: "2px",
-    marginLeft:"30px"
   },
   title: {
     fontSize: "1em",

@@ -4,12 +4,12 @@ import Thermometer from "react-thermometer-component";
 const styles = {
   dial: {
     display: "inline-block",
-    width: `300px`,
+    width: `200px`,
     height: `auto`,
     color: "#000",
-    border: "0.5px solid #fff",
     padding: "2px",
-    marginLeft:"180px"
+    marginLeft:"20px"
+
   },
   title: {
     fontSize: "1em",

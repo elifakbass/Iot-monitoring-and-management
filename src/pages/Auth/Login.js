@@ -11,12 +11,14 @@ import { Link } from '@mui/material';
 import { fetchLogin } from '../../api';
 import {useNavigate,Navigate} from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
+import { useTenant } from '../../Context/TenantContext';
 
 
 export default function Login(){
-  const {setUser,user}=useAuth();
+  const {setUser,user,setType}=useAuth();
   const navigate=useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(()=>{
     if(user){
       navigate("/" ,{
@@ -45,14 +47,32 @@ const formik = useFormik({
   validationSchema: validationSchema,
   onSubmit: async (values) =>  {
     await fetchLogin(values.email,values.password);
-    setUser(JSON.parse(localStorage.getItem("user-info")));
-    
-    if(localStorage.getItem("user-info")!=="\"error\""){
-      console.log(".")
-      navigate("/",{
-        replace:true
-      });
+    console.log(".");
+    const userInfo = JSON.parse(localStorage.getItem("user-info"));
+    const userType = JSON.parse(localStorage.getItem("user-type"));
 
+    if (userInfo !== "error") {
+      setUser(userInfo);
+      setType(userType);
+      console.log(userInfo);
+
+      if (userType === "customer") {
+        navigate("/", {
+          replace: true
+        });
+        window.location.reload();
+      } else if (userType === "tenant") {
+        navigate("/tenant", {
+          replace: true
+        });
+        window.location.reload();
+      }
+      else if (userType === "admin") {
+        navigate("/admin", {
+          replace: true
+        });
+        window.location.reload();
+      }
     }
 
     

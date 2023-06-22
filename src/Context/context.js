@@ -29,11 +29,18 @@ function urlSplit(location,setName,cihazlar){
     return location[1];
 
   }
+  if(location[0]==='tenant'){
+    return "tenant";
+  }
   return false;
 }
 
 
 export function DataProvider({children}) {
+
+
+
+
   const [data,setData]=useState(null);
   const [name,setName]=useState(localStorage.getItem("cihaz-name") || "");
   const [veri,setVeri]=useState([0]);
@@ -51,85 +58,13 @@ export function DataProvider({children}) {
   const {user}=useAuth();
   const [low,setLow]=useState(localStorage.getItem("low-alarm") || false);
   const [big,setBig]=useState(localStorage.getItem("max-alarm") || false);
+  const [selectedChart,setSelectedChart]=useState(3);
 
   const location=useLocation();
 
   const client = mqtt.connect(websocketUrl,options);
 
-  useEffect(()=>{
-
-    const getGostergeler = async () => {
-      const allGostergeler = [];
-      for (let i = 0; i < cihazlar.length; i++) {
-        const cihaz = cihazlar[i];
-        const dash = await fetchDashs(cihaz.id);
-        allGostergeler.push(dash);
-
-        
-        if(cihaz.isim===name){
-          localStorage.setItem("cihaz-id",cihaz.id);
-          localStorage.setItem("low-alarm",cihaz.alarm_alt_sinir);
-          localStorage.setItem("max-alarm",cihaz.alarm_ust_sinir);
-          setLow(cihaz.alarm_alt_sinir);
-          setBig(cihaz.alarm_ust_sinir);
-          localStorage.setItem("enlem",cihaz.enlem);
-          localStorage.setItem("boylam",cihaz.boylam);
-          setEnlem(cihaz.enlem);
-          setBoylam(cihaz.boylam);
-          
-          setCihazId(cihaz.id);
-          
-
-        }
- 
-      }
-      setGostergeler(allGostergeler);
-
-     
-
-    };
-    getGostergeler();
-
-    
-
-
-  },[cihazlar]);
   
-
-console.log(veri);
-  useEffect(()=>{
-    const sonuc=urlSplit(location.pathname,setName);
-    
-    console.log(typeof(sonuc)) ;
-    for(let i=0;i<cihazlar.length;i++)
-     {
-      let cihaz=cihazlar[i];
-      
-      
-      if(cihaz.isim===sonuc){
-        localStorage.setItem("cihaz-id",cihaz.id);
-        localStorage.setItem("low-alarm",cihaz.alarm_alt_sinir);
-        localStorage.setItem("max-alarm",cihaz.alarm_ust_sinir);
-        localStorage.setItem("enlem",cihaz.enlem);
-        localStorage.setItem("boylam",cihaz.boylam);
-        setLow(cihaz.alarm_alt_sinir);
-        setBig(cihaz.alarm_ust_sinir);
-        setEnlem(cihaz.enlem);
-        setBoylam(cihaz.boylam);
-        
-        setCihazId(cihaz.id);
-      }
-    }
-    
-
-  },[location.pathname]);
-
-  
-  console.log(veri);
-
-
-
-
 
   useEffect(()=>{
     const sonuc=urlSplit(location.pathname,setName);
@@ -217,33 +152,101 @@ console.log(veri);
     });
 
 
-      
 
+},[]);
 
+  useEffect(()=>{
+
+    const getGostergeler = async () => {
+      const allGostergeler = [];
+      for (let i = 0; i < cihazlar.length; i++) {
+        const cihaz = cihazlar[i];
+        const dash = await fetchDashs(cihaz.id);
+        allGostergeler.push(dash);
+
+        
+        if(cihaz.isim===name){
+          localStorage.setItem("cihaz-id",cihaz.id);
+          localStorage.setItem("low-alarm",cihaz.alarm_alt_sinir);
+          localStorage.setItem("max-alarm",cihaz.alarm_ust_sinir);
+          setLow(cihaz.alarm_alt_sinir);
+          setBig(cihaz.alarm_ust_sinir);
+          localStorage.setItem("enlem",cihaz.enlem);
+          localStorage.setItem("boylam",cihaz.boylam);
+          setEnlem(cihaz.enlem);
+          setBoylam(cihaz.boylam);
+          
+          setCihazId(cihaz.id);
+          
+
+        }
+ 
+      }
+      setGostergeler(allGostergeler);
 
      
 
+    };
+    getGostergeler();
+
+    
 
 
-/*
-  fetchDeviceProperties().then(veri=>{
-    veri.entities.map((item)=>{
-      setName(item.properties.name);
-      return setId(item.properties.id);
+  },[cihazlar]);
+  
+
+console.log(veri);
+  useEffect(()=>{
+    const sonuc=urlSplit(location.pathname,setName);
+ 
+
+    for(let i=0;i<cihazlar.length;i++)
+     {
+      let cihaz=cihazlar[i];
+      
+      
+      if(cihaz.isim===sonuc){
+        localStorage.setItem("cihaz-id",cihaz.id);
+        localStorage.setItem("low-alarm",cihaz.alarm_alt_sinir);
+        localStorage.setItem("max-alarm",cihaz.alarm_ust_sinir);
+        localStorage.setItem("enlem",cihaz.enlem);
+        localStorage.setItem("boylam",cihaz.boylam);
+        setLow(cihaz.alarm_alt_sinir);
+        setBig(cihaz.alarm_ust_sinir);
+        setEnlem(cihaz.enlem);
+        setBoylam(cihaz.boylam);
+        
+        setCihazId(cihaz.id);
+      }
+    }
+    
+    
+
+  },[location.pathname]);
+
+
+  useEffect(()=>{
+    gostergeler.map((g)=>{
+      let cihaz=parseInt(localStorage.getItem("cihaz-id"));
+      console.log(g);
+      if(cihaz===g[0].cihaz_id){
+        setSelectedChart(g[0].widget_no);
+        
+      }
+
     })
-  });
 
-  fetchData().then(veri=>{
-    veri.map((item)=>{
-      setTime((current)=>[...current,item.updated_at.slice(0,10)]);
-      return setVeri((current)=>[...current,item.deger]);
-    });
-  }); */
+  },[gostergeler,location.pathname])
 
-},[]);
+
+
+
+
+
 useEffect(()=>{
   setVeri([0]);
   setAlarm([]);
+  setData(null);
   const getVeriler=async()=>{
     if(!parseInt(localStorage.getItem("cihaz-id"))==0){
     await fetchVeriler(parseInt(localStorage.getItem("cihaz-id"))).then((data)=>{
@@ -297,7 +300,9 @@ useEffect(()=>{
     boylam,
     alarmCount,
     veriTabaniVeri,
-    cihazId
+    cihazId,
+    selectedChart
+
 
 
 

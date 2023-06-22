@@ -22,20 +22,22 @@ export default function BasicCard() {
     const {cihazlar}=useData();
     
   return (
-    <Card sx={{ minWidth: 350, marginLeft: 30,marginTop :10,display:'inline-block' ,minHeight:230}} color='d9d9d9'>
+    <Box sx={{ minWidth: 400,marginRight:10,marginTop:7}} >
+    <Card variant="outlined" sx={{backgroundColor:'#f2f2f2',borderRadius:7, boxShadow:'0 2px 4px rgba(0, 0, 0, 0.2)',minHeight:250}}>
       <CardContent sx={{backgroundColor:'d9d9d9'}}>
-      <Typography variant="body2" sx={{textAlign:'left',marginLeft:1, fontSize:17, letterSpacing:1,fontWeight:500}} color="text.secondary">
+      <Typography sx={{ fontSize: 20 , marginTop:1 ,marginLeft:1,marginRight:19}} align='left' color="text.secondary" gutterBottom>
           Bağlantılar
         </Typography>
-        <Typography variant="h3" component="div" sx={{marginTop:2,marginBottom:2, fontWeight:'bold'}} color="text.secondary">
+        <Typography variant="h3" component="div" sx={{marginTop:2,marginBottom:5, fontWeight:'bold',fontSize:55}} color="text.secondary">
           {cihazlar.length }
         </Typography>
         <ProgressBar/>
-        <Typography sx={{ fontSize: 14  }} color="text.secondary" gutterBottom>
+        <Typography sx={{ fontSize: 14 ,marginTop:3}} color="text.secondary" gutterBottom>
           Aktif Cihaz Sayısı
         </Typography>
       </CardContent>
       
     </Card>
+    </Box>
   );
 }
